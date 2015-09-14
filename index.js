@@ -51,7 +51,8 @@ module.exports = TypeScriptCompiler = (function () {
 				+ this.config.paths.public + '/' + outFile + ' ' + params.path
 				+ (typeof opt.tscOption === 'undefined' ? '' : ' ' + opt.tscOption);
 			console.log(cmd);
-			console.log(fs.readFileSync(params.path, "utf8"));
+			data = fs.readFileSync(params.path, "utf8");
+			fs.writeFileSync(params.path, data);
 
 			var child = exec.exec(cmd, function (error, stdout, stderr) {
 				if (error !== null) {
