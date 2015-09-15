@@ -1,77 +1,53 @@
+var typescript = require('./compiler');
 var TypeScriptCompiler;
 
 module.exports = TypeScriptCompiler = (function () {
 
-	var exec = require('child_process'),
-		sysPath = require('path'),
-		fs = require("fs");
-
-
 	TypeScriptCompiler.prototype.brunchPlugin = true;
-
 	TypeScriptCompiler.prototype.type = 'javascript';
-
 	TypeScriptCompiler.prototype.extension = 'ts';
 
 	function TypeScriptCompiler(config) {
-		this.config = config;
-		null;
+		if (config == null) config = {};
+		var plugin = config.plugins && config.plugins.coffeescript;
+		this.sourceMaps = !!config.sourceMaps;
 	}
 
+	TypeScriptCompiler.prototype.parseMap = function(compiled) {
+		var fileName, file;
+
+		for (fileName in compiled) {
+			file = compiled[fileName];
+			if (file.map) {
+				map = JSON.parse(file.map);
+				map.sources = [fileName];
+				map.file = '';
+				file.map = JSON.stringify(map);
+			}
+		}
+		return compiled
+	};
+
 	TypeScriptCompiler.prototype.compile = function (params, callback) {
-		var opt = (typeof this.config.plugins.brunchTypescript === 'undefined'
-			? {} : this.config.plugins.brunchTypescript);
-		//console.log("config.plugins.brunchTypescript:" + JSON.stringify(opt));
+		var result, compiled;
 
-		var stderr = {
-			Write: function (str) {
-				process.stderr.write(str);
-			},
-			WriteLine: function (str) {
-				process.stderr.write(str + '\n');
-			},
-			Close: function () {
-			}
+		var options = {
+			noEmitOnError: true,
+			noImplicitAny: false,
+			target: 1 /* ES5 */,
+			module: 1 /* CommonJS */,
+			removeComments: true,
+			sourceMap: this.sourceMaps
 		};
 
-		var search = function (item, array) {
-			for (key in array) {
-				if (array[key]) {
-					return key;
-				}
-			}
-
-			return null;
-		};
-
-		var outFile = search(params.path, this.config.files.javascripts.joinTo);
-
-		if (outFile != null) {
-			var cmd = sysPath.join(__dirname) + '/node_modules/.bin/tsc --out '
-				+ this.config.paths.public + '/' + outFile + ' ' + params.path
-				+ (typeof opt.tscOption === 'undefined' ? '' : ' ' + opt.tscOption);
-			console.log(cmd);
-			//data = fs.readFileSync(params.path, "utf8");
-			//fs.writeFileSync(params.path, data);
-
-			var child = exec.exec(cmd, function (error, stdout, stderr) {
-				if (error !== null) {
-					// if (error !== null) {
-					//     console.log(error);
-					// }
-
-					if (stdout !== null) {
-						console.log(stdout);
-					}
-
-					// if (stderr !== null) {
-					//     console.log(stderr);
-					// }
-				}
-			});
+		try {
+			compiled = typescript.compile(options, [params.path]);
+			result = this.parseMap(compiled)[params.path];
+		} catch (error) {
+			return callback(error);
 		}
 
-		return callback(null, params);
+		return callback(null, result);
 	};
 
 	return TypeScriptCompiler;

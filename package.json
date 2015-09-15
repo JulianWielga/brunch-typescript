@@ -1,19 +1,20 @@
 {
   "name": "brunch-typescript",
-  "version": "1.5.9",
+  "version": "0.0.1",
   "description": "Adds TypeScript support to brunch.",
-  "author": "Baptiste Donaux (http://www.baptiste-donaux.fr)",
-  "homepage": "https://github.com/baptistedonaux/brunch-typescript",
+  "author": "Julian Wielga",
+  "homepage": "https://github.com/julianwielga/brunch-typescript",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/baptistedonaux/brunch-typescript.git"
+    "url": "git+ssh://git@github.com/julianwielga/brunch-typescript.git"
   },
   "main": "./index.js",
   "dependencies": {
-    "typescript": "1.5.*"
+    "typescript": "1.5.*",
+    "typescript-require": "^0.2.9"
   },
   "bugs": {
-    "url": "https://github.com/baptistedonaux/brunch-typescript/issues"
+    "url": "https://github.com/julianwielga/brunch-typescript/issues"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

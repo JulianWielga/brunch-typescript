@@ -9,7 +9,7 @@ Or, do manual install:
 * Add `"brunch-typescript": "x.y.z"` to `package.json` of your brunch app.
   Pick a plugin version that corresponds to your minor (y) brunch version.
 * If you want to use git version of plugin, add
-`"brunch-typescript": "git+ssh://git@github.com:baptistedonaux/brunch-typescript.git"`.
+`"brunch-typescript": "git+ssh://git@github.com:julianwielga/brunch-typescript.git"`.
 
 ## brunch-config
 Add the ``` tsc ``` command options to brunch-config.js as follows.
@@ -18,7 +18,6 @@ Add the ``` tsc ``` command options to brunch-config.js as follows.
 exports.config = {
   plugins: {
     brunchTypescript: {
-      tscOption: "--module commonJs"
     }
   }
 }
