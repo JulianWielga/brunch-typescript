@@ -3,12 +3,12 @@
 import * as fs from "fs";
 import * as ts from "typescript";
 
-interface Result {
+export interface Result {
 	data?: string;
 	map?: string;
 }
 
-interface File {
+export interface File {
 	path: string;
 	data?: string;
 }
@@ -99,3 +99,6 @@ export function compile(options: ts.CompilerOptions, inputFiles: File[]): ts.Map
 
 	return results;
 }
+
+
+
