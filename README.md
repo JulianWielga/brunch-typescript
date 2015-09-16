@@ -12,22 +12,16 @@ Or, do manual install:
 `"brunch-typescript": "git+ssh://git@github.com:julianwielga/brunch-typescript.git"`.
 
 ## brunch-config
-Add the ``` tsc ``` command options to brunch-config.js as follows.
 
 ``` js
 exports.config = {
   plugins: {
-    brunchTypescript: {
+    typescript: {
+      useTsdBundle: boolean /* if tsd.json exists and has bundle you can use it as reference in every .ts file */
     }
   }
 }
 ```
-
-## Contributors
-
-* [baptistedonaux](https://github.com/baptistedonaux "Baptiste Donaux")
-* [xtity](https://github.com/xtity "xtity")
-
 
 ## License
 

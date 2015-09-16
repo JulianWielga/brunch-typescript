@@ -1,13 +1,14 @@
-/// <reference path="typings/node/node.d.ts" />
-/// <reference path="typings/typescript/typescript.d.ts" />
+/// <reference path="typings/tsd.d.ts" />
 var fs = require("fs");
 var ts = require("typescript");
-function compile(options, fileNames) {
+function compile(options, inputFiles) {
     var files = {};
     var results = {};
+    var fileNames = inputFiles.map(function (file) { return file.path; });
     // initialize the list of files
-    fileNames.forEach(function (fileName) {
-        files[fileName] = {
+    inputFiles.forEach(function (file) {
+        files[file.path] = {
+            data: file.data,
             version: 0
         };
     });
@@ -34,9 +35,9 @@ function compile(options, fileNames) {
     };
     // Create the language service files
     var services = ts.createLanguageService(servicesHost, ts.createDocumentRegistry());
-    fileNames.forEach(function (fileName) {
-        if (fs.existsSync(fileName) || files[fileName].data)
-            results[fileName] = emitFile(fileName);
+    inputFiles.forEach(function (file) {
+        if (file.data || fs.existsSync(file.path))
+            results[file.path] = emitFile(file.path);
         else {
             throw new Error('No file or data');
         }
@@ -45,14 +46,14 @@ function compile(options, fileNames) {
         var result = {};
         var output = services.getEmitOutput(fileName);
         if (output.emitSkipped) {
-            throw new Error(logErrors(fileName).join(', '));
+            throw new Error(logErrors(fileName).join(' '));
         }
         output.outputFiles.forEach(function (o) {
             if (o.name.substr(-3) === 'map') {
-                result['map'] = o.text;
+                result['map'] = o.text + '\n';
             }
             else {
-                result['data'] = o.text;
+                result['data'] = o.text + '\n';
             }
         });
         return result;

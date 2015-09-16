@@ -9,13 +9,22 @@ module.exports = TypeScriptCompiler = (function () {
 
 	function TypeScriptCompiler(config) {
 		if (config == null) config = {};
-		var plugin = config.plugins && config.plugins.coffeescript;
+		var plugin = config.plugins && config.plugins.typescript;
 		this.sourceMaps = !!config.sourceMaps;
+		if (plugin && !!plugin.useTsdBundle) {
+			try {
+				var path = process.cwd();
+				var tsd = require(path + '/tsd.json');
+				this.referenceBundle = '/// <reference path="' + path + '/' + tsd.bundle + '" />';
+			} catch (error) {
+				console.log(error);
+			}
+		}
 	}
 
 	TypeScriptCompiler.prototype.parseMap = function(compiled) {
-		var fileName, file;
 
+		var fileName, file;
 		for (fileName in compiled) {
 			file = compiled[fileName];
 			if (file.map) {
@@ -40,8 +49,12 @@ module.exports = TypeScriptCompiler = (function () {
 			sourceMap: this.sourceMaps
 		};
 
+		if (this.referenceBundle) {
+			params.data = this.referenceBundle + '\n' + params.data;
+		}
+
 		try {
-			compiled = typescript.compile(options, [params.path]);
+			compiled = typescript.compile(options, [params]);
 			result = this.parseMap(compiled)[params.path];
 		} catch (error) {
 			return callback(error);

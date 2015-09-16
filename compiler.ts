@@ -1,5 +1,4 @@
-/// <reference path="typings/node/node.d.ts" />
-/// <reference path="typings/typescript/typescript.d.ts" />
+/// <reference path="typings/tsd.d.ts" />
 
 import * as fs from "fs";
 import * as ts from "typescript";
@@ -9,14 +8,21 @@ interface Result {
 	map?: string;
 }
 
-export function compile(options: ts.CompilerOptions, fileNames: string[]): ts.Map<Object> {
+interface File {
+	path: string;
+	data?: string;
+}
+
+export function compile(options: ts.CompilerOptions, inputFiles: File[]): ts.Map<Object> {
 	const files: ts.Map<{ version: number, data?: string }> = {};
 	const results: ts.Map<Result> = {};
+	const fileNames: string[] = inputFiles.map(file => {return file.path});
 
 	// initialize the list of files
-	fileNames.forEach(fileName => {
-		files[fileName] = {
-			version: 0
+	inputFiles.forEach(file => {
+		files[file.path] = {
+			data: file.data,
+			version: 0,
 		};
 	});
 
@@ -46,9 +52,9 @@ export function compile(options: ts.CompilerOptions, fileNames: string[]): ts.Ma
 	// Create the language service files
 	const services = ts.createLanguageService(servicesHost, ts.createDocumentRegistry());
 
-	fileNames.forEach(fileName => {
-		if (fs.existsSync(fileName) || files[fileName].data)
-			results[fileName] = emitFile(fileName);
+	inputFiles.forEach(file => {
+		if (file.data || fs.existsSync(file.path))
+			results[file.path] = emitFile(file.path);
 		else {
 			throw new Error('No file or data');
 		}
@@ -59,14 +65,14 @@ export function compile(options: ts.CompilerOptions, fileNames: string[]): ts.Ma
 		let output = services.getEmitOutput(fileName);
 
 		if (output.emitSkipped) {
-			throw new Error(logErrors(fileName).join(', '));
+			throw new Error(logErrors(fileName).join(' '));
 		}
 
 		output.outputFiles.forEach(o => {
 			if (o.name.substr(-3) === 'map') {
-				result['map'] = o.text;
+				result['map'] = o.text + '\n';
 			} else {
-				result['data'] = o.text;
+				result['data'] = o.text + '\n';
 			}
 		});
 		return result;
