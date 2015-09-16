@@ -1,19 +1,19 @@
 {
-  "name": "brunch-typescript",
-  "version": "0.0.1",
+  "name": "typescript-tsd-brunch",
+  "version": "1.0.0",
   "description": "Adds TypeScript support to brunch.",
   "author": "Julian Wielga",
-  "homepage": "https://github.com/julianwielga/brunch-typescript",
+  "homepage": "https://github.com/JulianWielga/typescript-tsd-brunch",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/julianwielga/brunch-typescript.git"
+    "url": "git+ssh://git@github.com/julianwielga/typescript-tsd-brunch.git"
   },
   "main": "./index.js",
   "dependencies": {
     "typescript": "1.5.*"
   },
   "bugs": {
-    "url": "https://github.com/julianwielga/brunch-typescript/issues"
+    "url": "https://github.com/JulianWielga/typescript-tsd-brunch/issues"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

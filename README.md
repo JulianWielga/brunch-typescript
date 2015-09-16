@@ -1,15 +1,15 @@
-## brunch-typescript
+## typescript-tsd-brunch
 Adds TypeScript support to [brunch](http://brunch.io).
 
 ## Usage
-Install the plugin via npm with `npm install --save brunch-typescript`.
+Install the plugin via npm with `npm install --save typescript-tsd-brunch`.
 
 Or, do manual install:
 
-* Add `"brunch-typescript": "x.y.z"` to `package.json` of your brunch app.
+* Add `"typescript-tsd-brunch": "x.y.z"` to `package.json` of your brunch app.
   Pick a plugin version that corresponds to your minor (y) brunch version.
 * If you want to use git version of plugin, add
-`"brunch-typescript": "git+ssh://git@github.com:julianwielga/brunch-typescript.git"`.
+`"brunch-typescript": "git+ssh://git@github.com:julianwielga/typescript-tsd-brunch.git"`.
 
 ## brunch-config
 
