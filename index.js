@@ -4,9 +4,6 @@ var ts = require("typescript");
 var compiler = require("./compiler");
 var TypeScriptCompiler = (function () {
     function TypeScriptCompiler(config) {
-        this.brunchPlugin = true;
-        this.type = 'javascript';
-        this.extension = 'ts';
         if (config == null)
             config = {};
         var plugin = config.plugins && config.plugins.typescript;
@@ -60,5 +57,8 @@ var TypeScriptCompiler = (function () {
     };
     return TypeScriptCompiler;
 })();
-exports.TypeScriptCompiler = TypeScriptCompiler;
+TypeScriptCompiler.prototype.brunchPlugin = true;
+TypeScriptCompiler.prototype.type = 'javascript';
+TypeScriptCompiler.prototype.extension = 'ts';
+module.exports = TypeScriptCompiler;
 //# sourceMappingURL=index.js.map

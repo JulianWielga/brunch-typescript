@@ -4,11 +4,11 @@
 import ts = require("typescript");
 import compiler = require("./compiler");
 
-export class TypeScriptCompiler {
+class TypeScriptCompiler {
 
-	brunchPlugin: boolean = true;
-	type: string = 'javascript';
-	extension: string = 'ts';
+	brunchPlugin: boolean;
+	type: string;
+	extension: string;
 	sourceMaps: boolean;
 	referenceBundle: string;
 
@@ -69,3 +69,9 @@ export class TypeScriptCompiler {
 	}
 
 }
+
+TypeScriptCompiler.prototype.brunchPlugin = true;
+TypeScriptCompiler.prototype.type = 'javascript';
+TypeScriptCompiler.prototype.extension = 'ts';
+
+export = TypeScriptCompiler
